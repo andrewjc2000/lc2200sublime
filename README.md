@@ -6,4 +6,8 @@ Although the LC-2200 and LC-900 are very similar, *technically* this repository 
 
 To use the syntax highlighting on a Windows Machine with Sublime Text 3 installed, create any folder you'd like in `"%appdata%\Sublime Text 3\Packages\User`.  Then, add `lc2200.sublime-syntax` to this folder and you are done!
 
+On an OS X machine, I believe the directory is `"$HOME/Library/Application Support/Sublime Text 3/Packages/User"` but as I do not own a Mac I cannot verify this.
+
 I heavily referenced [this link](https://www.sublimetext.com/docs/3/syntax.html) and [this link](https://www.sublimetext.com/docs/3/scope_naming.html) when creating this Syntax highlighting file.  If you have any suggested improvements, please feel free to fork this repo and make a pull request.
+
+Additionally, Sublime Syntax files are based on a Regex Engine called the Oniguruma Regex Engine, and there is some documentation available on that engine [here](https://github.com/kkos/oniguruma/blob/master/doc/SYNTAX.md).
