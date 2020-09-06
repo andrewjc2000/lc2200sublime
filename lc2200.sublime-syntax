@@ -1,0 +1,72 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: LC-2200 Assembly
+file_extensions: [s]
+scope: source.s
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - include: comments
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+    - include: label
+    - include: keywords
+    - include: numbers
+    - include: registers
+    - include: strings
+
+  label:
+    - match: '[A-z][A-z\d]+(?=\:)'
+      scope: entity.name.function.s
+
+  keywords:
+    # Keywords are if, else for and while.
+    # Note that blackslashes don't need to be escaped within single quoted
+    # strings in YAML. When using single quoted strings, only single quotes
+    # need to be escaped: this is done by using two single quotes next to each
+    # other.
+    - match: '\b(add|nand|addi|lw|sw|br|jalr|halt|skplt|skple|skpeq|skpne|skpgt|skpge|lea)\b'
+      scope: keyword.control.s
+    - match: '\.(fill|word)\b'
+      scope: keyword.control.s
+
+  numbers:
+    - match: '(\b(-)?[0-9]+\b)|(\b0x[0-9A-F]+\b)'
+      scope: constant.numeric.s
+    - match: '\-'
+      scope: keyword.operator.arithmetic.s
+
+  registers:
+    - match: '\$(zero|at|v0|a0|a1|a2|t0|t1|t2|s0|s1|s2|k0|sp|fp|ra)'
+      scope: storage.type.primitive.s
+
+  strings:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character.
+    - match: '"'
+      scope: punctuation.definition.string.begin.s
+      push: inside_string
+
+  inside_string:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.s
+    - match: '\.'
+      scope: constant.character.escape.s
+    - match: '"'
+      scope: punctuation.definition.string.end.s
+      pop: true
+
+  comments:
+    # Comments begin with a '!' and finish at the end of the line.
+    - match: '!'
+      scope: punctuation.definition.comment.s
+      push:
+        # This is an anonymous context push for brevity.
+        - meta_scope: comment.line.exclamation.s
+        - match: $\n?
+          pop: true
